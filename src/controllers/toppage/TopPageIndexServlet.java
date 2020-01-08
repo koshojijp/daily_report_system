@@ -1,6 +1,7 @@
 package controllers.toppage;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -45,7 +46,9 @@ public class TopPageIndexServlet extends HttpServlet {
         }
         List<Report> reports = em.createNamedQuery("getMyAllReports", Report.class)
                                 .setParameter("employee", login_employee)
-                                .getSingleResult();
+                                .setFirstResult(15 * (page - 1))
+                                .setMaxResults(15)
+                                .getResultList();
 
         long reports_count = em.createNamedQuery("getMyReportsCount", Long.class)
                                 .setParameter("employee", login_employee)
